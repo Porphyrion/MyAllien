@@ -36,7 +36,7 @@ def check_keyup_events(event, ship):
 def update_screen(ai_settings, screen, ship, bullets):
     screen.fill(ai_settings.big_color)
     for bullet in bullets.sprites():
-        bullet.draw_bullet()
+        bullet.screen.blit(bullet.image, bullet.rect)
     ship.blitme()
     pygame.display.flip()
 
