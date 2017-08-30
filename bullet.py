@@ -9,7 +9,8 @@ class Bullet(Sprite):
         self.screen = screen
         self.image = pygame.image.load("images/bullet.bmp")
 
-        self.rect = pygame.Rect(0, 0, ai_settings.bullet_width, ai_settings.bullet_height)
+        # self.rect = pygame.Rect(0, 0, ai_settings.bullet_width, ai_settings.bullet_height)
+        self.rect = self.image.get_rect()
         self.rect.centerx = ship.rect.centerx
         self.rect.top = ship.rect.top
 
