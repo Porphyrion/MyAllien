@@ -42,11 +42,12 @@ def update_screen(ai_settings, screen, ship, bullets, aliens):
     pygame.display.flip()
 
 
-def update_bullets(bullets):
+def update_bullets(aliens, bullets):
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom < 10:
             bullets.remove(bullet)
+    collision = pygame.sprite.groupcollide(bullets, aliens, True, True)
 
 
 def fire_bullet(ai_settings, screen, ship, bullets):
@@ -80,10 +81,27 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
-    alien.rect.y  = alien.rect.height + 2 * alien.rect.height * row_number
+    alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
     alien.rect.x = alien.x
     aliens.add(alien)
 
+
+def update_aliens(ai_settings, aliens):
+    check_fleet_edges(ai_settings, aliens)
+    aliens.update()
+
+
+def check_fleet_edges(ai_settings, aliens):
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_settings, aliens)
+            break
+
+
+def change_fleet_direction(ai_settings, aliens):
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_drop_speed
+    ai_settings.fleet_direction *= -1
 
 
 
