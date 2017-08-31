@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
+from random import randint
 
 
 class Alien(Sprite):
@@ -9,7 +10,11 @@ class Alien(Sprite):
         self.screen = screen
         self.ai_settings = ai_settings
 
-        self.image = pygame.image.load("images/ufo.bmp")
+        image_type = randint(0, 1)
+        if image_type:
+            self.image = pygame.image.load("images/ufo.bmp")
+        else:
+            self.image = pygame.image.load("images/ufo2.bmp")
         self.rect = self.image.get_rect()
 
         self.rect.x = self.rect.width
