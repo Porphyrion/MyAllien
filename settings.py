@@ -1,8 +1,8 @@
 class Settings:
 
     def __init__(self):
-        self.screen_width = 900
-        self.screen_height = 650
+        self.screen_width = 400
+        self.screen_height = 700
         self.big_color = (230, 230, 230)
         self.ship_speed_factor = 2.75
         self.bullet_speed_factor = 3.5

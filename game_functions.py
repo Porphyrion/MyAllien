@@ -47,7 +47,14 @@ def update_bullets(aliens, bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom < 10:
             bullets.remove(bullet)
-    collision = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    # collision = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    for bullet in bullets.copy():
+        for alien in aliens.copy():
+            col = pygame.sprite.collide_rect(bullet, alien)
+            if col:
+                bullets.remove(bullet)
+                if alien.ifkill():
+                    aliens.remove(alien)
 
 
 def fire_bullet(ai_settings, screen, ship, bullets):

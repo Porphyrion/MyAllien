@@ -14,6 +14,7 @@ class Alien(Sprite):
 
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
+        self.health = 2
 
         self.x = float(self.rect.x)
 
@@ -30,4 +31,12 @@ class Alien(Sprite):
             return True
         elif self.rect.left <= 0:
             return True
+
+    def ifkill(self):
+        self.health -= 1
+        if self.health == 0:
+            return True
+        else:
+            return False
+
 
