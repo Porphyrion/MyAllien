@@ -23,6 +23,7 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bul
     if button_clicked and not stats.game_active:
         stats.reset_stats()
         stats.game_active = True
+        ai_settings.initialize_dynamic_settings()
 
         aliens.empty()
         bullets.empty()
@@ -74,6 +75,7 @@ def check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets):
     collision = pygame.sprite.groupcollide(bullets, aliens, True, True)
     if len(aliens) == 0:
         bullets.empty()
+        ai_settings.increase_speed()
         create_fleet(ai_settings, screen, ship, aliens)
 
 
@@ -119,7 +121,6 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hits(ai_settings, stats, screen, ship, aliens, bullets)
     check_aliens_bottom(ai_settings,stats, screen, ship, aliens, bullets)
-
 
 
 def check_fleet_edges(ai_settings, aliens):
