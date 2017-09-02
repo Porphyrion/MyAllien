@@ -11,11 +11,14 @@ class Settings:
         self.bullet_speed_factor = 3
         self.bullet_allowed = 3
 
-        self.alien_speed_factor = 7
+        self.alien_speed_factor = 20
         self.fleet_drop_speed = 10
         self.fleet_direction = 1    # 1 - движение вправо, -1 влево
 
         self.speedup_scale = 1.1
+        self.score_scale = 1.5
+
+        # self.aliens_point = 10
 
         self.initialize_dynamic_settings()
 
@@ -26,10 +29,13 @@ class Settings:
 
         self.fleet_direction = 1
 
+        self.aliens_point = 10
+
     def increase_speed(self):
         self.ship_speed_factor *= self.speedup_scale
         self.bullet_speed_factor *= self.speedup_scale
         self.alien_speed_factor *= self.speedup_scale
+        self.aliens_point *= int(self.aliens_point * self.score_scale)
 
 
 
