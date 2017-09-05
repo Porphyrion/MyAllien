@@ -4,7 +4,8 @@ class Settings:
         self.screen_width = 900
         self.screen_height = 650
 
-        self.big_color = (25, 80, 230)
+        self.big_color = (230, 230, 230)
+        self.small_color = (25, 80, 230)
         self.ship_speed_factor = 5
         self.ship_limit = 3
 
@@ -18,7 +19,7 @@ class Settings:
         self.speedup_scale = 1.1
         self.score_scale = 1.5
 
-        # self.aliens_point = 10
+        self.aliens_point = 10
 
         self.initialize_dynamic_settings()
 

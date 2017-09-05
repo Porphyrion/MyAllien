@@ -57,15 +57,19 @@ def check_keyup_events(event, ship):
         ship.moving_left = False
 
 
-def update_screen(ai_settings, screen, stats, sb, ship, bullets, aliens, play_button):
-    screen.fill(ai_settings.big_color)
-    for bullet in bullets.sprites():
-        bullet.screen.blit(bullet.image, bullet.rect)
-    ship.blitme()
-    aliens.draw(screen)
-    sb.show_score()
+def update_screen(ai_settings, screen, stats, sb, ship, bullets, aliens, play_button, logo):
+
     if not stats.game_active:
+        screen.fill(ai_settings.small_color)
         play_button.draw_button()
+        logo.draw_logo()
+    else:
+        screen.fill(ai_settings.big_color)
+        for bullet in bullets.sprites():
+            bullet.screen.blit(bullet.image, bullet.rect)
+        ship.blitme()
+        aliens.draw(screen)
+        sb.show_score()
     pygame.display.flip()
 
 
