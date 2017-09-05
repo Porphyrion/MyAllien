@@ -17,6 +17,9 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
     play_button = Button(screen)  # создание кнопки PLAY
     logo = Logo(screen)
+    sound_logo = pygame.mixer.music
+    sound_logo.load('sounds/alien_batman.mp3')
+    sound_logo.play()
     stats = GameStats(ai_settings)
     sb = Scoreboard(ai_settings, screen, stats)
     ship = Ship(ai_settings, screen)  # создание корабля
