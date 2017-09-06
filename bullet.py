@@ -13,6 +13,8 @@ class Bullet(Sprite):
         self.rect.centerx = ship.rect.centerx
         self.rect.top = ship.rect.top
 
+        self.shooting_sound = pygame.mixer.Sound("sounds/pew.wav")
+
         self.y = float(self.rect.y)
 
         # self.color = ai_settings.bullet_color
@@ -24,6 +26,7 @@ class Bullet(Sprite):
 
     def draw_bullet(self):
         pygame.draw.rect(self.screen, self.color, self.rect)
+
 
 
 

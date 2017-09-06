@@ -1,3 +1,5 @@
+from pygame.mixer import Sound
+
 class Settings:
 
     def __init__(self):
@@ -5,7 +7,7 @@ class Settings:
         self.screen_height = 650
 
         self.big_color = (230, 230, 230)
-        self.small_color = (25, 80, 230)
+        self.small_color = (100, 100, 230)
         self.ship_speed_factor = 5
         self.ship_limit = 3
 
@@ -22,6 +24,7 @@ class Settings:
         self.aliens_point = 10
 
         self.initialize_dynamic_settings()
+        self.crush_sound = Sound("sounds/expl3.wav")
 
     def initialize_dynamic_settings(self):
         self.ship_speed_factor = 4

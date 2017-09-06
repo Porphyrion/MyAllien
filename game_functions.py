@@ -5,24 +5,26 @@ from allien import Alien
 from time import sleep
 
 
-def check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets):
+def check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, logo):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, mouse_x, mouse_y)
+            check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, mouse_x, mouse_y, logo)
         elif event.type == pygame.KEYDOWN:
             check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
 
 
-def check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, mouse_x, mouse_y):
+def check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, mouse_x, mouse_y, logo):
     button_clicked = play_button.msg_image_rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
         stats.reset_stats()
         stats.game_active = True
+        logo.sound_off()
+
         sb.prep_score()
         sb.prep_high_score()
         sb.prep_level()
@@ -86,6 +88,7 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
     if collision:
         for aliens in collision.values():
             stats.score += ai_settings.aliens_point * len(aliens)
+            ai_settings.crush_sound.play()
         sb.prep_score()
         check_high_score(stats, sb)
     if len(aliens) == 0:
@@ -99,6 +102,7 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
 def fire_bullet(ai_settings, screen, ship, bullets):
     if len(bullets) < ai_settings.bullet_allowed:
         new_bullet = Bullet(ai_settings, screen, ship)
+        new_bullet.shooting_sound.play()
         bullets.add(new_bullet)
 
 
