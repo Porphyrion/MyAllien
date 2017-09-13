@@ -14,7 +14,7 @@ class Settings:
         self.bullet_speed_factor = 3
         self.bullet_allowed = 3
 
-        self.alien_speed_factor = 20
+        self.alien_speed_factor = 15
         self.fleet_drop_speed = 10
         self.fleet_direction = 1    # 1 - движение вправо, -1 влево
 
@@ -24,7 +24,9 @@ class Settings:
         self.aliens_point = 10
 
         self.initialize_dynamic_settings()
-        self.crush_sound = Sound("sounds/expl3.wav")
+        self.boom_sound = Sound("sounds/expl3.wav")
+        self.crush_sound = Sound("sounds/expl6.wav")
+
 
     def initialize_dynamic_settings(self):
         self.ship_speed_factor = 4

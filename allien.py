@@ -11,11 +11,14 @@ class Alien(Sprite):
         self.ai_settings = ai_settings
 
         image_type = randint(0, 1)
+
         if image_type:
             self.image = pygame.image.load("images/ufo.bmp")
         else:
             self.image = pygame.image.load("images/ufo2.bmp")
         self.rect = self.image.get_rect()
+
+        self.health = 1
 
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
@@ -35,4 +38,25 @@ class Alien(Sprite):
             return True
         elif self.rect.left <= 0:
             return True
+
+
+class SecondAlien(Alien):
+
+    def __init__(self, ai_settings, screen):
+        super(SecondAlien, self).__init__(ai_settings, screen)
+        self.image = pygame.image.load("images/ufo3.bmp")
+        self.health = 2
+
+
+class DevilAlien(Alien):
+
+    def __init__(self, ai_settings, screen):
+        super(DevilAlien, self).__init__(ai_settings, screen)
+        self.image = pygame.image.load("images/ufo4.bmp")
+        self.health = 3
+
+
+
+
+
 

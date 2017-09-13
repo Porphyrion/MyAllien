@@ -2,7 +2,10 @@ import sys
 import pygame
 from bullet import Bullet
 from allien import Alien
+from allien import SecondAlien
+from allien import DevilAlien
 from time import sleep
+from random import randint
 
 
 def check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, logo):
@@ -84,11 +87,17 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
 
 
 def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets):
-    collision = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    collision = pygame.sprite.groupcollide(bullets, aliens, True, False)
     if collision:
-        for aliens in collision.values():
-            stats.score += ai_settings.aliens_point * len(aliens)
-            ai_settings.crush_sound.play()
+        for alienss in collision.values():
+            for alien in alienss:
+                alien.health -= 1
+                if not alien.health:
+                    aliens.remove(alien)
+                    stats.score += ai_settings.aliens_point * len(aliens)
+                    ai_settings.crush_sound.play()
+                else:
+                    ai_settings.boom_sound.play()
         sb.prep_score()
         check_high_score(stats, sb)
     if len(aliens) == 0:
@@ -128,7 +137,7 @@ def get_number_rows(ai_settings, ship_height, alien_height):
 
 
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
-    alien = Alien(ai_settings, screen)
+    alien = DevilAlien(ai_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
