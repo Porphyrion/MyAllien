@@ -6,6 +6,7 @@ from allien import SecondAlien
 from allien import DevilAlien
 from time import sleep
 from random import randint
+from bomb import Bomb
 
 
 def check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, logo):
@@ -62,7 +63,7 @@ def check_keyup_events(event, ship):
         ship.moving_left = False
 
 
-def update_screen(ai_settings, screen, stats, sb, ship, bullets, aliens, play_button, logo):
+def update_screen(ai_settings, screen, stats, sb, ship, bullets, aliens, play_button, logo, bombs):
 
     if not stats.game_active:
         screen.fill(ai_settings.small_color)
@@ -72,24 +73,32 @@ def update_screen(ai_settings, screen, stats, sb, ship, bullets, aliens, play_bu
         screen.fill(ai_settings.big_color)
         for bullet in bullets.sprites():
             bullet.screen.blit(bullet.image, bullet.rect)
+        alien_fire = randint(1, len(aliens))
+        iffire = randint(1, 200)
+        if iffire == 199:
+            new_bomb = Bomb(ai_settings, screen, aliens.sprites()[alien_fire-1])
+            bombs.add(new_bomb)
+        for bomb in bombs.sprites():
+            bomb.screen.blit(bomb.image, bomb.rect)
+        bombs.update()
         ship.blitme()
         aliens.draw(screen)
         sb.show_score()
     pygame.display.flip()
 
 
-def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom < 10:
             bullets.remove(bullet)
-    check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets)
+    check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
 
 
-def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets):
-    collision = pygame.sprite.groupcollide(bullets, aliens, True, False)
-    if collision:
-        for alienss in collision.values():
+def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
+    collision_a = pygame.sprite.groupcollide(bullets, aliens, True, False)
+    if collision_a:
+        for alienss in collision_a.values():
             for alien in alienss:
                 alien.health -= 1
                 if not alien.health:
@@ -98,6 +107,13 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
                     ai_settings.crush_sound.play()
                 else:
                     ai_settings.boom_sound.play()
+        sb.prep_score()
+        check_high_score(stats, sb)
+    collision_b = pygame.sprite.groupcollide(bullets, bombs, True, True)
+    if collision_b:
+        for bombs in collision_b.values():
+            stats.score += ai_settings.aliens_point * len(aliens) * 2
+            ai_settings.boom_sound.play()
         sb.prep_score()
         check_high_score(stats, sb)
     if len(aliens) == 0:
@@ -137,7 +153,7 @@ def get_number_rows(ai_settings, ship_height, alien_height):
 
 
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
-    alien = DevilAlien(ai_settings, screen)
+    alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
@@ -193,6 +209,7 @@ def check_high_score(stats, sb):
     if stats.score > stats.high_score:
         stats.high_score = stats.score
         sb.prep_high_score()
+
 
 
 
