@@ -10,9 +10,10 @@ class Settings:
         self.small_color = (100, 100, 230)
         self.ship_speed_factor = 5
         self.ship_limit = 3
+        self.ship_level = 1
 
         self.bullet_speed_factor = 3
-        self.bullet_allowed = 3
+        self.bullet_allowed = 10
 
         self.alien_speed_factor = 15
         self.fleet_drop_speed = 10
@@ -27,7 +28,6 @@ class Settings:
         self.boom_sound = Sound("sounds/expl3.wav")
         self.crush_sound = Sound("sounds/expl6.wav")
 
-
     def initialize_dynamic_settings(self):
         self.ship_speed_factor = 4
         self.bullet_speed_factor = 3
@@ -36,12 +36,32 @@ class Settings:
         self.fleet_direction = 1
 
         self.aliens_point = 10
+        self.ship_level = 1
 
-    def increase_speed(self):
-        self.ship_speed_factor *= self.speedup_scale
-        self.bullet_speed_factor *= self.speedup_scale
-        self.alien_speed_factor *= self.speedup_scale
+    def increase_speed(self, level):
+        print("In settings level", str(level))
         self.aliens_point *= int(self.aliens_point * self.score_scale)
+        if level == 3:
+            # self.ship_speed_factor = 4
+            # self.bullet_speed_factor = 3
+            self.alien_speed_factor = 5
+            self.ship_level = 3
+        elif level == 5:
+            # self.ship_speed_factor = 4
+            # self.bullet_speed_factor = 3
+            self.alien_speed_factor = 5
+            self.ship_level = 5
+        elif level == 6:
+            # self.ship_speed_factor = 4
+            # self.bullet_speed_factor = 3
+            self.alien_speed_factor = 5
+            self.ship_level = 6
+        else:
+            self.ship_speed_factor *= self.speedup_scale
+            self.bullet_speed_factor *= self.speedup_scale
+            self.alien_speed_factor *= self.speedup_scale
+
+
 
 
 

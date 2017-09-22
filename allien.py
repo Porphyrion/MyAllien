@@ -12,6 +12,8 @@ class Alien(Sprite):
 
         image_type = randint(0, 1)
 
+        self.bomb = False
+
         if image_type:
             self.image = pygame.image.load("images/ufo.bmp")
         else:
@@ -46,6 +48,7 @@ class SecondAlien(Alien):
         super(SecondAlien, self).__init__(ai_settings, screen)
         self.image = pygame.image.load("images/ufo3.bmp")
         self.health = 2
+        self.bomb = True
 
 
 class DevilAlien(Alien):
@@ -54,7 +57,16 @@ class DevilAlien(Alien):
         super(DevilAlien, self).__init__(ai_settings, screen)
         self.image = pygame.image.load("images/ufo4.bmp")
         self.health = 3
+        self.bomb = True
 
+
+class HtonAlien(Alien):
+
+    def __init__(self, ai_settings, screen):
+        super(HtonAlien, self).__init__(ai_settings, screen)
+        self.image = pygame.image.load("images/ufo5.bmp")
+        self.health = 3
+        self.bomb = True
 
 
 

@@ -4,6 +4,7 @@ from bullet import Bullet
 from allien import Alien
 from allien import SecondAlien
 from allien import DevilAlien
+from allien import HtonAlien
 from time import sleep
 from random import randint
 from bomb import Bomb
@@ -86,37 +87,36 @@ def update_screen(ai_settings, screen, stats, sb, ship, bullets, aliens, play_bu
     pygame.display.flip()
 
 
-def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom < 10:
             bullets.remove(bullet)
-    check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
+    check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
 
-def update_bomb(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
+def update_bombs(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
     bombs.update()
     for bomb in bombs.copy():
-        print(bomb.rect.bottom)
-        # if bomb.rect.bottom > -630:
-        #     bombs.remove(bomb)
+        if bomb.rect.bottom > 640:
+            bombs.remove(bomb)
     check_bomb_ship_colliion(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
 
 
 def check_bomb_ship_colliion(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
     collision_b = pygame.sprite.groupcollide(bullets, bombs, True, True)
     if collision_b:
-        for bombs in collision_b.values():
+        for bombss in collision_b.values():
             stats.score += ai_settings.aliens_point * len(aliens) * 2
             ai_settings.boom_sound.play()
         sb.prep_score()
         check_high_score(stats, sb)
     collision_b_w_s = pygame.sprite.spritecollide(ship, bombs, True)
     for bomb in collision_b_w_s:
-        ship_hits(ai_settings, stats, sb, screen, ship,aliens, bullets)
+        ship_hits(ai_settings, stats, sb, screen, ship, aliens, bullets)
 
 
-def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
+def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets):
     collision_a = pygame.sprite.groupcollide(bullets, aliens, True, False)
     if collision_a:
         for alienss in collision_a.values():
@@ -132,8 +132,9 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
         check_high_score(stats, sb)
     if len(aliens) == 0:
         bullets.empty()
-        ai_settings.increase_speed()
         stats.level += 1
+        print("Level" + str(stats.level))
+        ai_settings.increase_speed(stats.level)
         sb.prep_level()
         create_fleet(ai_settings, screen, ship, aliens)
 
@@ -146,9 +147,17 @@ def fire_bullet(ai_settings, screen, ship, bullets):
 
 
 def create_fleet(ai_settings, screen, ship, aliens):
-    alien = Alien(ai_settings, screen)
+    # print(ai_settings.ship_level)
+    if ai_settings.ship_level == 1:
+        alien = Alien(ai_settings, screen)
+    if ai_settings.ship_level == 3:
+        alien = SecondAlien(ai_settings, screen)
+    if ai_settings.ship_level == 5:
+        alien = DevilAlien(ai_settings, screen)
+    if ai_settings.ship_level == 6:
+        alien = HtonAlien(ai_settings, screen)
     number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
-    number_rows = get_number_rows(ai_settings, ship.rect.height,alien.rect.height)
+    number_rows = get_number_rows(ai_settings, ship.rect.height, alien.rect.height)
     for row_number in range(number_rows):
         for alien_number in range(number_aliens_x):
             create_alien(ai_settings, screen, aliens, alien_number, row_number)
@@ -167,7 +176,15 @@ def get_number_rows(ai_settings, ship_height, alien_height):
 
 
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
-    alien = Alien(ai_settings, screen)
+    if ai_settings.ship_level == 1:
+        alien = Alien(ai_settings, screen)
+    if ai_settings.ship_level == 3:
+        alien = SecondAlien(ai_settings, screen)
+    if ai_settings.ship_level == 5:
+        alien = DevilAlien(ai_settings, screen)
+    if ai_settings.ship_level == 6:
+        alien = HtonAlien(ai_settings, screen)
+    # alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
