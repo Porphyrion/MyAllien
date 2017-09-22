@@ -80,7 +80,6 @@ def update_screen(ai_settings, screen, stats, sb, ship, bullets, aliens, play_bu
             bombs.add(new_bomb)
         for bomb in bombs.sprites():
             bomb.screen.blit(bomb.image, bomb.rect)
-        bombs.update()
         ship.blitme()
         aliens.draw(screen)
         sb.show_score()
@@ -95,6 +94,28 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
     check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
 
 
+def update_bomb(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
+    bombs.update()
+    for bomb in bombs.copy():
+        print(bomb.rect.bottom)
+        # if bomb.rect.bottom > -630:
+        #     bombs.remove(bomb)
+    check_bomb_ship_colliion(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
+
+
+def check_bomb_ship_colliion(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
+    collision_b = pygame.sprite.groupcollide(bullets, bombs, True, True)
+    if collision_b:
+        for bombs in collision_b.values():
+            stats.score += ai_settings.aliens_point * len(aliens) * 2
+            ai_settings.boom_sound.play()
+        sb.prep_score()
+        check_high_score(stats, sb)
+    collision_b_w_s = pygame.sprite.spritecollide(ship, bombs, True)
+    for bomb in collision_b_w_s:
+        ship_hits(ai_settings, stats, sb, screen, ship,aliens, bullets)
+
+
 def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs):
     collision_a = pygame.sprite.groupcollide(bullets, aliens, True, False)
     if collision_a:
@@ -107,13 +128,6 @@ def check_bullet_alien_collision(ai_settings, screen, stats, sb, ship, aliens, b
                     ai_settings.crush_sound.play()
                 else:
                     ai_settings.boom_sound.play()
-        sb.prep_score()
-        check_high_score(stats, sb)
-    collision_b = pygame.sprite.groupcollide(bullets, bombs, True, True)
-    if collision_b:
-        for bombs in collision_b.values():
-            stats.score += ai_settings.aliens_point * len(aliens) * 2
-            ai_settings.boom_sound.play()
         sb.prep_score()
         check_high_score(stats, sb)
     if len(aliens) == 0:

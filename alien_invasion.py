@@ -10,7 +10,6 @@ from scoreboard import Scoreboard
 from logo import Logo
 
 
-
 def run_game():
     pygame.init()
     ai_settings = Settings()
@@ -33,6 +32,6 @@ def run_game():
             ship.update()
             gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
             gf.update_aliens(ai_settings, stats, sb, screen, ship, aliens, bullets)
-            # gf.update_screen(ai_settings, screen, stats, ship, bullets, aliens, play_button)
+            gf.update_bomb(ai_settings, screen, stats, sb, ship, aliens, bullets, bombs)
 
 run_game()
