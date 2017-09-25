@@ -65,7 +65,7 @@ class HtonAlien(Alien):
     def __init__(self, ai_settings, screen):
         super(HtonAlien, self).__init__(ai_settings, screen)
         self.image = pygame.image.load("images/ufo5.bmp")
-        self.health = 3
+        self.health = 5
         self.bomb = True
 
 
